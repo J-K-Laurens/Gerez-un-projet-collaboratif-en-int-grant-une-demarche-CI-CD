@@ -1,0 +1,18 @@
+Nom : Démo GitHub Actions
+Nom d'exécution : ${{ github.actor }} teste GitHub Actions 🚀
+activé : [pousser]
+emplois :
+  Explorer-Actions-GitHub :
+    fonctionne sous : ubuntu-latest
+    mesures:
+      - run: echo "🎉 La tâche a été automatiquement déclenchée par un événement ${{ github.event_name }}."
+      - run: echo "🐧 Cette tâche est maintenant en cours d'exécution sur un serveur ${{ runner.os }} hébergé par GitHub!"
+      - run: echo "🔎 Le nom de votre branche est ${{ github.ref }} et votre dépôt est ${{ github.repository }}."
+      - nom : Consulter le code du dépôt
+        utilise : actions/checkout@v6
+      - run: echo "💡 Le dépôt ${{ github.repository }} a été cloné sur le runner."
+      - run: echo "🖥️ Le flux de travail est maintenant prêt à tester votre code sur le lanceur."
+      - nom : Liste des fichiers du dépôt
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
