@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ng-toolkit # Set the working directory to the front folder
+        working-directory: front # Set the working directory to the front folder
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
