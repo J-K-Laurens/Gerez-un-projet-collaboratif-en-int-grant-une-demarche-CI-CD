@@ -24,8 +24,13 @@ jobs:
         working-directory: back
         run: mvn -B test
       - name: Upload Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always() # Même si les tests échouent
         with:
           name: test-results
           path: back/target/surefire-reports/*.xml
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: back/target/surefire-reports/*.xml
