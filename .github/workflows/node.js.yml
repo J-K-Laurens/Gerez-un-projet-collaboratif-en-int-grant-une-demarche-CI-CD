@@ -17,7 +17,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     defaults:
       run:
-        working-directory: front # Set the working directory to the front folder
+        working-directory: front
 
     steps:
     - uses: actions/checkout@v4
