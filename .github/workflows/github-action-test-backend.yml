@@ -23,6 +23,14 @@ jobs:
       - name: Test with Maven
         working-directory: back
         run: mvn -B test
+      - name: Generate Jacoco Coverage Report
+        working-directory: back
+        run: mvn -B jacoco:report
+      - name: Upload Coverage Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage-report
+          path: back/target/site/jacoco/
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
