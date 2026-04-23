@@ -1,18 +1,18 @@
-Nom: Démo GitHub Actions
-Nom d'exécution: ${{ github.actor }} teste GitHub Actions 🚀
-activé : [pousser]
-emplois :
-  Explorer-Actions-GitHub:
-    fonctionne sous : ubuntu-latest
-    mesures:
-      - run: echo "🎉 La tâche a été automatiquement déclenchée par un événement ${{ github.event_name }}."
-      - run: echo "🐧 Cette tâche est maintenant en cours d'exécution sur un serveur ${{ runner.os }} hébergé par GitHub!"
-      - run: echo "🔎 Le nom de votre branche est ${{ github.ref }} et votre dépôt est ${{ github.repository }}."
-      - nom: Consulter le code du dépôt
-        utilise : actions/checkout@v6
-      - run: echo "💡 Le dépôt ${{ github.repository }} a été cloné sur le runner."
-      - run: echo "🖥️ Le flux de travail est maintenant prêt à tester votre code sur le lanceur."
-      - nom: Liste des fichiers du dépôt
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v6
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
