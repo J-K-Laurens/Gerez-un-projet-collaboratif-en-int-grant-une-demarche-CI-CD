@@ -23,4 +23,5 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze with SonarQube
         working-directory: back
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Projet-10 -Dsonar.projectName='Projet 10' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_7d1959fd8f129b8974994057da0243c286e72a5c
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Projet-10 -Dsonar.projectName='Projet 10' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqa_daec473a6c124eb7bb0fa956db434d99242ed23a
+
