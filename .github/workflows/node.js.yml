@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     defaults:
@@ -35,10 +35,3 @@ jobs:
       with:
         name: frontend-coverage-report
         path: front/coverage/
-    - name: Analyze with SonarQube
-      working-directory: front
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      run: |
-        npx sonar-scanner -Dsonar.projectKey=Projet-10-frontend -Dsonar.projectName="Projet 10 Frontend" -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.token=$SONAR_TOKEN -Dsonar.sources=src -Dsonar.tests=src -Dsonar.test.inclusions="**/*.spec.ts" -Dsonar.exclusions="**/node_modules/**" -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
