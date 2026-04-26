@@ -32,3 +32,17 @@ jobs:
       uses: SonarSource/sonarqube-scan-action@v5.0.0
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Upload JaCoCo Coverage Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: jacoco-report
+        path: back/target/site/jacoco/
+        retention-days: 30
+    - name: Upload Frontend Coverage Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: frontend-coverage-report
+        path: front/coverage/
+        retention-days: 30
