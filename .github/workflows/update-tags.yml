@@ -1,0 +1,32 @@
+name: Update Tags
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  generate:
+    runs-on: github-ubuntu-latest-s
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Parse semver
+        uses: madhead/semver-utils@36d1e0ed361bd7b4b77665de8093092eaeabe6ba # v4.3.0
+        id: version
+        with:
+          version: ${{ github.ref_name }}
+
+      - name: Update tags
+        run: |
+          TAGS='v${{ steps.version.outputs.major }} v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}'
+
+          for t in $TAGS; do
+            git tag -f "$t"
+            git push origin ":$t" 2>/dev/null || true
+            git push origin "$t"
+          done
