@@ -1,0 +1,7 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.openclassrooms</groupId>
+  <artifactId>bobapp-frontend</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Projet 10 Frontend</name>
+</project>
