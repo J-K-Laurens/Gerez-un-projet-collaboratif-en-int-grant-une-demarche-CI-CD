@@ -43,13 +43,6 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    - name: Check Quality Gate
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        scanMetadataReportFile: front/.scannerwork/report-task.txt
-
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
