@@ -36,7 +36,12 @@ jobs:
       uses: SonarSource/sonarqube-scan-action@v5.0.0
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    - name: Upload JaCoCo Coverage Report
+    - name: Check Quality Gate
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        scanMetadataReportFile: front/.scannerwork/report-task.txt
       uses: actions/upload-artifact@v4
       if: always()
       with:

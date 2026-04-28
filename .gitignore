@@ -39,3 +39,6 @@ build/
 .mvn
 
 .angular
+
+### Doc ###
+PIPELINE_CI_CD_DOCUMENTATION.md
