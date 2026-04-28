@@ -1,6 +1,4 @@
 # BobApp
-test des nouveaux yml
-
 Clone project:
 
 > git clone XXXXX
