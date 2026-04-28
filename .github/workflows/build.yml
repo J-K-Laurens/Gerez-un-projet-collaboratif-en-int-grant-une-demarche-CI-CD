@@ -22,8 +22,6 @@ jobs:
         cache: maven
     - name: Build and test backend with Maven
       run: mvn clean verify -f back/pom.xml
-    - name: Copy Maven dependencies for SonarQube analysis
-      run: mvn dependency:copy-dependencies -f back/pom.xml -DoutputDirectory=back/target/dependency
     - name: Build and test frontend
       working-directory: front
       run: |
