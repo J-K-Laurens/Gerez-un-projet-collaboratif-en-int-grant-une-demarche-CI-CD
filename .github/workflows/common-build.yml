@@ -6,8 +6,7 @@ on:
 env:
   SONAR_ORG: j-k-laurens
   SONAR_URL: https://sonarcloud.io
-  SONAR_KEY_BACKEND: J-K-Laurens_Backend
-  SONAR_KEY_FRONTEND: J-K-Laurens_Frontend
+  SONAR_PROJECT_KEY: bobapp
 
 jobs:
   # Build & Test - Backend + Frontend
@@ -94,21 +93,6 @@ jobs:
       - name: Build backend for Sonar
         run: mvn clean verify -f back/pom.xml
 
-      # Sonar scan backend
-      - name: SonarQube Scan - Backend
-        run: |
-          mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
-            -f back/pom.xml \
-            -Dsonar.projectBaseDir=back \
-            -Dsonar.organization=${{ env.SONAR_ORG }} \
-            -Dsonar.projectKey=${{ env.SONAR_KEY_BACKEND }} \
-            -Dsonar.host.url=${{ env.SONAR_URL }} \
-            -Dsonar.sources=src/main/java \
-            -Dsonar.tests=src/test/java \
-            -Dsonar.java.binaries=target/classes
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -116,11 +100,19 @@ jobs:
           cache: npm
           cache-dependency-path: front/package-lock.json
 
-      # Sonar scan frontend
-      - name: SonarQube Scan - Frontend
+      # Build frontend for Sonar
+      - name: Build frontend for Sonar
+        working-directory: front
+        run: |
+          npm ci
+          npm run build --if-present
+          npm test -- --watch=false --browsers=ChromeHeadless --code-coverage
+
+      # Sonar scan - Full project
+      - name: SonarQube Scan - Full Project
         uses: SonarSource/sonarqube-scan-action@v5.0.0
         with:
-          projectBaseDir: front
+          projectBaseDir: .
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
