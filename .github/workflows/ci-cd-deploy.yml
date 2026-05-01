@@ -108,6 +108,6 @@ jobs:
       - name: Load and push ${{ matrix.service }} image
         run: |
           docker load --input /tmp/${{ matrix.service }}-image.tar
-          for tag in ${{ steps.meta.outputs.tags }}; do
+          echo "${{ steps.meta.outputs.tags }}" | while IFS= read -r tag; do
             docker push "$tag"
           done
