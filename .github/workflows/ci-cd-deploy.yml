@@ -30,7 +30,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
 
       # Extract Docker metadata
       - name: Extract metadata for ${{ matrix.service }}
@@ -75,9 +77,6 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
 
       # Login to DockerHub
       - name: Log in to DockerHub
