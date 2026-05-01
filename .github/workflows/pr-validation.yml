@@ -6,6 +6,9 @@ on:
 
 name: PR Validation
 
+permissions:
+  contents: read
+
 jobs:
   # Call common build workflow
   call-common-build:
