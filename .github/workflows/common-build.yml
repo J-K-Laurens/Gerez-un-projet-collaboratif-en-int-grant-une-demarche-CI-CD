@@ -1,0 +1,135 @@
+name: Common Build & Quality
+
+on:
+  workflow_call:
+
+env:
+  SONAR_ORG: j-k-laurens
+  SONAR_URL: https://sonarcloud.io
+  SONAR_KEY_BACKEND: J-K-Laurens_Backend
+  SONAR_KEY_FRONTEND: J-K-Laurens_Frontend
+
+jobs:
+  # Build & Test - Backend + Frontend
+  build-test:
+    name: 🏗️ Build & Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Cache Maven dependencies
+      - name: Cache Maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: npm
+          cache-dependency-path: front/package-lock.json
+
+      # Cache npm dependencies
+      - name: Cache npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('front/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      # Build & test backend
+      - name: Build and test backend
+        run: mvn clean verify -f back/pom.xml
+
+      # Build & test frontend
+      - name: Build and test frontend
+        working-directory: front
+        run: |
+          npm ci
+          npm run build --if-present
+          npm test -- --watch=false --browsers=ChromeHeadless --code-coverage
+
+  # Code Quality - SonarQube
+  code-quality:
+    name: 🔍 Code Quality (SonarQube)
+    runs-on: ubuntu-latest
+    needs: build-test
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Cache Maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Rebuild for Sonar
+      - name: Build backend for Sonar
+        run: mvn clean verify -f back/pom.xml
+
+      # Sonar scan backend
+      - name: SonarQube Scan - Backend
+        run: |
+          mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
+            -f back/pom.xml \
+            -Dsonar.organization=${{ env.SONAR_ORG }} \
+            -Dsonar.projectKey=${{ env.SONAR_KEY_BACKEND }} \
+            -Dsonar.host.url=${{ env.SONAR_URL }} \
+            -Dsonar.sources=back/src/main/java \
+            -Dsonar.tests=back/src/test/java \
+            -Dsonar.java.binaries=back/target/classes
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: npm
+          cache-dependency-path: front/package-lock.json
+
+      # Sonar scan frontend
+      - name: SonarQube Scan - Frontend
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
+        with:
+          projectBaseDir: front
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      # Upload coverage reports
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: |
+            back/target/site/jacoco/
+            front/coverage/
+          retention-days: 30

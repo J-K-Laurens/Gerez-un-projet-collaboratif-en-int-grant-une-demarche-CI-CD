@@ -1,0 +1,13 @@
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+name: PR Validation
+
+jobs:
+  # Call common build workflow
+  call-common-build:
+    uses: ./.github/workflows/common-build.yml
+    secrets: inherit
