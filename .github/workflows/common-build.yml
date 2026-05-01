@@ -113,6 +113,10 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v5.0.0
         with:
           projectBaseDir: .
+          organization: ${{ env.SONAR_ORG }}
+          projectKey: ${{ env.SONAR_PROJECT_KEY }}
+          sonarToken: ${{ secrets.SONAR_TOKEN }}
+          failOnQualityGate: true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
