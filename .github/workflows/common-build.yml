@@ -87,14 +87,15 @@ jobs:
 
       # Sonar scan - Full project
       - name: SonarQube Scan - Full Project
-        uses: SonarSource/sonarqube-scan-action@v5
+        uses: SonarSource/sonarqube-scan-action@v6
         with:
-          projectBaseDir: .
-          organization: ${{ env.SONAR_ORG }}
-          projectKey: ${{ env.SONAR_PROJECT_KEY }}
-          host: ${{ env.SONAR_URL }}
-          sonarToken: ${{ secrets.SONAR_TOKEN }}
-          failOnQualityGate: true
+          args: >
+            -Dsonar.organization=${{ env.SONAR_ORG }}
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+            -Dsonar.host.url=${{ env.SONAR_URL }}
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       # Upload coverage reports
       - name: Upload coverage reports
