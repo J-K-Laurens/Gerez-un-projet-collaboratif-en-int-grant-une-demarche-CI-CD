@@ -99,12 +99,13 @@ jobs:
         run: |
           mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
             -f back/pom.xml \
+            -Dsonar.projectBaseDir=back \
             -Dsonar.organization=${{ env.SONAR_ORG }} \
             -Dsonar.projectKey=${{ env.SONAR_KEY_BACKEND }} \
             -Dsonar.host.url=${{ env.SONAR_URL }} \
-            -Dsonar.sources=back/src/main/java \
-            -Dsonar.tests=back/src/test/java \
-            -Dsonar.java.binaries=back/target/classes
+            -Dsonar.sources=src/main/java \
+            -Dsonar.tests=src/test/java \
+            -Dsonar.java.binaries=target/classes
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
