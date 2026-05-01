@@ -6,7 +6,7 @@ on:
 env:
   SONAR_ORG: j-k-laurens
   SONAR_URL: https://sonarcloud.io
-  SONAR_PROJECT_KEY: bobapp
+  SONAR_PROJECT_KEY: J-K-Laurens_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
 
 jobs:
   # Build & Test - Backend + Frontend
