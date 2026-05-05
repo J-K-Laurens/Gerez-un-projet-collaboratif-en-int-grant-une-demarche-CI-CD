@@ -39,3 +39,7 @@ build/
 .mvn
 
 .angular
+
+contributing.md
+LICENSE.txt
+SECURITY.md
