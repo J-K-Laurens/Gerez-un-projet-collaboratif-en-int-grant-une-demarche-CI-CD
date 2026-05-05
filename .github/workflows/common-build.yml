@@ -85,6 +85,14 @@ jobs:
         with:
           name: build-artifacts
 
+      # Verify artifacts were downloaded correctly
+      - name: Verify build artifacts
+        run: |
+          echo "Checking for compiled classes..."
+          ls -la back/target/classes/ 2>/dev/null || echo "Warning: back/target/classes not found"
+          echo "Checking for frontend coverage..."
+          ls -la front/coverage/ 2>/dev/null || echo "Warning: front/coverage not found"
+
       # Sonar scan - Full project
       - name: SonarQube Scan - Full Project
         uses: SonarSource/sonarqube-scan-action@v6
@@ -94,6 +102,10 @@ jobs:
             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
             -Dsonar.host.url=${{ env.SONAR_URL }}
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.java.binaries=back/target/classes
+            -Dsonar.java.sources=back/src/main/java
+            -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
+            -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov.info
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
