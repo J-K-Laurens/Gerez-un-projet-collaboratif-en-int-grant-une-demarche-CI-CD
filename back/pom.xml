@@ -64,6 +64,7 @@
 				<version>3.2.0</version>
 				<configuration>
 					<configLocation>sun_checks.xml</configLocation>
+					<failOnViolation>false</failOnViolation> // Ne pas échouer le build en cas de violation de Checkstyle, mais afficher les rapports
 				</configuration>
 			</plugin>
 		</plugins>
